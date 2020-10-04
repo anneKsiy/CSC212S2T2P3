@@ -38,18 +38,18 @@ public class Graph {
             this.destination = destination;
             this.weight = weight;
         }
-    }
-
-    // Method to get the edge weight between Schools
-    void createFiltered(School a, School b) {
-        if (Math.sqrt(Math.pow(Float.parseFloat(a.getLng()), 2) * Math.pow(Float.parseFloat(a.getLat()), 2)) % 6 ==
-            School.getNameLength(b) % 6 && Math.sqrt(Math.pow(Float.parseFloat(a.getLng()), 2) * Math.pow(Float.parseFloat(a.getLat()), 2)) % 6 ==
-            Float.parseFloat(b.getRating())) {
-
+        // Method which compares edge weightings
+        public int compareTo(Edge otherEdge) {
+            if (this.weight > otherEdge.weight) {
+                return 1;
+            }
+            return -1;
         }
     }
 
-    static List<School> filteredGenerator(List<School> s) {
+    // Method to get the edge weight between Schools
+    static int[][] graphGenerator(Graph g, List<School> s) {
+        int[][] matrix = new int[s.size()][s.size()];
         List<School> newSchoolList = new ArrayList<>();
         for (int i = 0; i < s.size(); i++) {
             for (int j = 0; j < s.size(); j++) {
@@ -58,20 +58,20 @@ public class Graph {
                         Math.floor(Math.sqrt(Math.pow(Double.parseDouble(s.get(i).getLat()), 2) * Math.pow(Double.parseDouble(s.get(i).getLng()), 2)) % 6) ==
                         Double.parseDouble(s.get(j).getRating())) {
                     if (!newSchoolList.contains(s.get(i))) {
-                        newSchoolList.add(s.get(i));
-                    }
-                    if (!newSchoolList.contains(s.get(j))) {
-                        newSchoolList.add(s.get(j));
+                        g.addEdge(s, s.get(i), s.get(j));
+                        g.addEdge(s, s.get(j), s.get(i));
+                        matrix[i][j] = (int) distanceCalculator(s.get(i), s.get(j));
+                        matrix[j][i] = matrix[i][j];
                     }
                 }
             }
         }
-            return newSchoolList;
-        }
+        return matrix;
+    }
 
     // Method to determine the distance between 2 Schools using their longitude and latitude
     static double distanceCalculator(School a, School b) {
-        double radius = 6371 * 1000;
+        double radius = 6371;
         double latA = Double.parseDouble(a.getLat());
         double latB = Double.parseDouble(b.getLat());
         double lngA = Double.parseDouble(a.getLng());
@@ -80,7 +80,7 @@ public class Graph {
         double dLng = (lngB - lngA) * Math.PI / 180;
         double val = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.sin(dLng/2) * Math.sin(dLng/2) * Math.cos(latA) * Math.cos(latB);
         double ang = 2 * Math.atan2(Math.sqrt(val), Math.sqrt(1-val));
-        return Math.floor(radius * ang);
+        return Math.round(radius * ang);
     }
 
     // Method to add edge into the graph
@@ -100,4 +100,6 @@ public class Graph {
             }
         }
     }
+
+
 }

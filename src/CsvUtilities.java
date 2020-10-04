@@ -27,43 +27,11 @@ public class CsvUtilities {
         }
         return schools;
     }
-    public static void generateCSV(String fileName, List<School> schools, ArrayList<Integer> DFSTravPath,
-                                   ArrayList<Integer> BFSTravPath) throws IOException {
+    public static void generateCSV(String fileName, String[] source, String[] dest, int[] vals) throws IOException {
         FileWriter fw = new FileWriter(fileName);
         PrintWriter out = new PrintWriter(fw);
-        out.print("Values [");
-        for (School s : schools) {
-            if (schools.indexOf(s) != 0 && schools.indexOf(s) != schools.size() - 1) {
-                out.print(" " + s.getName() + ",");
-            }
-            else if (schools.indexOf(s) == 0) {
-                out.print(s.getName() + ",");
-            }
-            else if (schools.indexOf(s) == schools.size() - 1) {
-                out.print(" " + s.getName());
-            }
-        }
-        out.print("]\n\n");
-        out.print("Sorted [");
-        for (School s : schools) {
-            if (schools.indexOf(s) != 0 && schools.indexOf(s) != schools.size() - 1) {
-                out.print(" " + s.getName() + ",");
-            }
-            else if (schools.indexOf(s) == 0) {
-                out.print(s.getName() + ",");
-            }
-            else if (schools.indexOf(s) == schools.size() - 1) {
-                out.print(" " + s.getName());
-            }
-        }
-        out.print("]");
-        out.print("\n\nFollowing is Depth First Traversal\n");
-        for (int i = 0; i < DFSTravPath.size(); i++) {
-            out.print(DFSTravPath.get(i) + " ");
-        }
-        out.print("\n\nFollowing is Breadth First Traversal\n");
-        for (int i = 0; i < BFSTravPath.size(); i++) {
-            out.print(BFSTravPath.get(i) + " ");
+        for (int i = 0; i < source.length; i++) {
+            out.print("From '" + source[i] + "' to '" + dest[i] + "' is " + vals[i] + " Km\n");
         }
         out.flush();
         out.close();

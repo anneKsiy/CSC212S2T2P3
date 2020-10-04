@@ -8,7 +8,7 @@ import java.io.*;
 public class ShortestPath {
     // A utility function to find the vertex with minimum distance value,
     // from the set of vertices not yet included in shortest path tree
-    static final int V = 9;
+    static final int V = 133;
     int minDistance(int dist[], Boolean sptSet[])
     {
         // Initialize min value
@@ -34,7 +34,7 @@ public class ShortestPath {
     // Function that implements Dijkstra's single source shortest path
     // algorithm for a graph represented using adjacency matrix
     // representation
-    void dijkstra(int graph[][], int src)
+    int[] dijkstra(int graph[][], int src)
     {
         int dist[] = new int[V]; // The output array. dist[i] will hold
         // the shortest distance from src to i
@@ -74,7 +74,7 @@ public class ShortestPath {
         }
 
         // print the constructed distance array
-        printSolution(dist);
+        return dist;
     }
 
     // Driver method
